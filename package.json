@@ -1,6 +1,6 @@
 {
   "name": "tslint-plugin-graphql",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Check your GraphQL query strings against a schema.",
   "main": "tslint-base.json",
   "scripts": {
