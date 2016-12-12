@@ -8,8 +8,9 @@
             {
                 // Import default settings for your GraphQL client. Supported values:
                 // 'apollo', 'relay', 'lokka'
-                "env": "apollo",
-                "schemaJsonFilepath": "./schema.json"
+                "env": "relay",
+                "schemaJsonFilepath": "./schema.json",
+                "tagName":"gql"
                 // tagName is gql by default
             }
         ]

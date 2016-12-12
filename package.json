@@ -4,9 +4,9 @@
   "description": "Check your GraphQL query strings against a schema.",
   "main": "tslint-base.json",
   "scripts": {
-    "test": "tsc && tslint --project=tsconfig.json && jest --verbose --coverage",
+    "test": "tsc && npm run tslint && jest --verbose --coverage",
     "watch:test": "jest --watch",
-    "tslint": "tslint --project=tsconfig.json"
+    "tslint": "tslint --config test/tslint1.json test/test1.ts && tslint --config test/tslint2.json test/test2.ts"
   },
   "repository": {
     "type": "git",

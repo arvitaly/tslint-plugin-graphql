@@ -54,23 +54,41 @@ class GraphQLWalker extends tslint_1.RuleWalker {
         if (options.ruleArguments) {
             options.ruleArguments.map((optionGroup) => {
                 const { schema, env, tagName } = this.parseOptions(optionGroup);
-                this.tagRules.push({ schema, env, tagName });
+                const realEnv = typeof (env) === "undefined" ? "lokka" : env;
+                this.tagRules.push({ schema, env: realEnv, tagName });
             });
         }
     }
     visitNode(node) {
         if (node.kind === ts.SyntaxKind.TaggedTemplateExpression && node.getChildren().length > 1) {
-            if (node.getChildren()[0].kind === ts.SyntaxKind.Identifier && node.getChildren()[0].getText() === "gql") {
-                switch (node.getChildren()[1].kind) {
-                    case ts.SyntaxKind.FirstTemplateToken:
-                    case ts.SyntaxKind.TemplateExpression:
-                        this.tagRules.map((r) => {
-                            const text = node.getChildren()[1].getText();
-                            this.handleTemplate(node, text.substr(1, text.length - 2), r.schema, r.env);
-                        });
-                    default:
+            const temp = node;
+            this.tagRules.map((rule) => {
+                if (templateExpressionMatchesTag(rule.tagName, node)) {
+                    let query = null;
+                    switch (temp.template.kind) {
+                        case ts.SyntaxKind.FirstTemplateToken:
+                            query = temp.template.getText();
+                            break;
+                        case ts.SyntaxKind.TemplateExpression:
+                            const template = temp.template;
+                            let currentLiteral = template.head.getText();
+                            currentLiteral = currentLiteral.substr(0, currentLiteral.length - 2).replace(/\.+$/gi, "");
+                            let text = currentLiteral;
+                            template.templateSpans.map((span, i) => {
+                                text += replaceExpression(span.expression.getText(), currentLiteral, rule.env);
+                                currentLiteral = span.literal.getText();
+                                currentLiteral = currentLiteral.substr(2, currentLiteral.length - 4)
+                                    .replace(/\.+$/gi, "");
+                                text += currentLiteral;
+                            });
+                            query = text + "}`";
+                        default:
+                    }
+                    if (query !== null) {
+                        this.handleTemplate(node, query.substr(1, query.length - 2), rule.schema, rule.env);
+                    }
                 }
-            }
+            });
         }
         super.visitNode(node);
     }
@@ -139,4 +157,46 @@ function initSchema(json) {
 }
 function initSchemaFromFile(jsonFile) {
     return initSchema(JSON.parse(fs.readFileSync(jsonFile, "utf8")));
+}
+function templateExpressionMatchesTag(tagName, node) {
+    const tagNameSegments = tagName.split(".").length;
+    if (tagNameSegments === 1) {
+        return node.getChildren()[0].kind === ts.SyntaxKind.Identifier && node.getChildren()[0].getText() === tagName;
+    }
+    else if (tagNameSegments === 2) {
+        return node.getChildren()[0].kind === ts.SyntaxKind.PropertyAccessExpression
+            && tagName ===
+                node.getChildren()[0].expression.getText() + "." +
+                    node.getChildren()[0].name.getText();
+    }
+    else {
+        // We don't currently support 3 segments so ignore
+        return false;
+    }
+}
+function replaceExpression(fragment, chunk, env) {
+    const nameLength = fragment.length;
+    if (env === "relay") {
+        // The chunk before this one had a colon at the end, so this
+        // is a variable
+        // Add 2 for brackets in the interpolation
+        if (/:\s*$/.test(chunk)) {
+            return "$" + strWithLen(nameLength + 2);
+        }
+        else {
+            return "..." + strWithLen(nameLength);
+        }
+    }
+    else if (env === "lokka" && /\.\.\.\s*$/.test(chunk)) {
+        // This is Lokka-style fragment interpolation where you actually type the '...' yourself
+        return strWithLen(nameLength + 3);
+    }
+    else {
+        throw new Error("Invalid interpolation");
+    }
+}
+function strWithLen(len) {
+    // from 
+    // http://stackoverflow.com/questions/14343844/create-a-string-of-variable-length-filled-with-a-repeated-character
+    return new Array(len + 1).join("x");
 }
