@@ -1,0 +1,59 @@
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}
+
+type RootMutation {
+  createComment(input: CreateCommentInput): CreateCommentPayload
+}
+
+input CreateCommentInput {
+  stuff: String
+}
+
+type CreateCommentPayload {
+  story: Story
+}
+
+type CreateEventPayload {
+  viewer: User
+  user: User
+}
+
+type User {
+  events: [String]
+}
+
+type RootQuery {
+  number: Int
+  allFilms: AllFilmsObj
+  sum(a: Int, b: Int): Int
+  greetings: Greetings
+}
+
+type AllFilmsObj {
+  films: [Film]
+}
+
+type Film {
+  title: String
+  director: String
+  releaseDate: String
+}
+
+type Greetings {
+  hello: String
+}
+
+type Story {
+  id: ID
+  comments: [Comment]
+}
+
+type Comment {
+  text: String
+}
+
+type PublicUser {
+  fullName: String
+}

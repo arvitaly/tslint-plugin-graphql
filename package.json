@@ -1,0 +1,46 @@
+{
+  "name": "tslint-plugin-graphql",
+  "version": "0.0.1",
+  "description": "Check your GraphQL query strings against a schema.",
+  "main": "tslint-base.json",
+  "scripts": {
+    "test": "tsc && tslint --project=tsconfig.json && jest --verbose --coverage",
+    "watch:test": "jest --watch",
+    "tslint": "tslint --project=tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arvitaly/tslint-plugin-graphql.git"
+  },
+  "keywords": [
+    "tslint",
+    "graphql",
+    "validation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arvitaly/tslint-plugin-graphql/issues"
+  },
+  "homepage": "https://github.com/arvitaly/tslint-plugin-graphql#readme",
+  "jest": {
+    "automock": true,
+    "unmockedModulePathPatterns": [
+      "react"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^16.0.1",
+    "coveralls": "^2.11.15",
+    "jest": "^17.0.3",
+    "tslint": "^4.0.2",
+    "typescript": "^2.1.4"
+  },
+  "dependencies": {
+    "@types/graphql": "^0.8.2",
+    "@types/lodash": "^4.14.43",
+    "@types/node": "0.0.2",
+    "graphql": "^0.8.2",
+    "lodash": "^4.17.2"
+  }
+}
