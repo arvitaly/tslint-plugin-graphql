@@ -120,7 +120,7 @@ class GraphQLWalker extends tslint_1.RuleWalker {
             schema = initSchema(schemaJson);
         }
         else if (schemaJsonFilepath) {
-            const realSchemaJsonFilepath = path.resolve(path.join(path.dirname(this.getSourceFile().fileName), schemaJsonFilepath));
+            const realSchemaJsonFilepath = path.resolve(schemaJsonFilepath);
             schema = initSchemaFromFile(realSchemaJsonFilepath);
         }
         else {
