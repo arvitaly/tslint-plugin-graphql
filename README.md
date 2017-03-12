@@ -7,11 +7,32 @@ Check your GraphQL query strings against a schema.
 
 # Install
 
-    npm install tslint-plugin-graphql --save
+    npm install tslint-plugin-graphql --save-dev
 
 # Usage
 
+Example of tslint.json
 
+    {
+        "extends": [
+            "tslint:latest",
+            "tslint-plugin-graphql"
+        ],
+        "rules": {
+            "object-literal-sort-keys": false,
+            "graphql": [
+                "error",
+                {
+                    // Import default settings for your GraphQL client. Supported values:
+                    // 'apollo', 'relay', 'lokka'
+                    "env": "relay",
+                    "schemaJsonFilepath": "./graphql.schema.json",
+                    "tagName": "Relay.QL"
+                    // tagName is gql by default 
+                }
+            ]
+        }
+    }
 
 # API
 
