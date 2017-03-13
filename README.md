@@ -1,5 +1,7 @@
 # tslint-plugin-graphql
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/arvitaly/tslint-plugin-graphql.svg)](https://greenkeeper.io/)
+
 Check your GraphQL query strings against a schema.
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
