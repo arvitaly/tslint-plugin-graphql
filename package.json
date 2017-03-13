@@ -30,17 +30,17 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^16.0.1",
+    "@types/jest": "^19.2.1",
     "coveralls": "^2.11.15",
-    "jest": "^17.0.3",
+    "jest": "^19.0.2",
     "tslint": "^4.0.2",
     "typescript": "^2.1.4"
   },
   "dependencies": {
     "@types/graphql": "^0.8.2",
     "@types/lodash": "^4.14.43",
-    "@types/node": "0.0.2",
-    "graphql": "^0.8.2",
+    "@types/node": "7.0.8",
+    "graphql": "^0.9.1",
     "lodash": "^4.17.2"
   }
 }
