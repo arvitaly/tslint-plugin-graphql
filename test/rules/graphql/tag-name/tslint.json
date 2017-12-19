@@ -1,10 +1,10 @@
 {
     "extends": [
-        "./.."
+        "../../../rules"
     ],
     "rules": {
         "graphql": [
-            "error",
+            true,
             {
                 // Import default settings for your GraphQL client. Supported values:
                 // 'apollo', 'relay', 'lokka'
