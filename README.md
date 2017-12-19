@@ -23,11 +23,11 @@ Example of tslint.json
         "rules": {
             "object-literal-sort-keys": false,
             "graphql": [
-                "error",
+                true,
                 {
                     // Import default settings for your GraphQL client. Supported values:
                     // 'apollo', 'relay', 'lokka'
-                    "env": "relay",
+                    "env": "apollo",
                     "schemaJsonFilepath": "./graphql.schema.json",
                     "tagName": "Relay.QL"
                     // tagName is gql by default 

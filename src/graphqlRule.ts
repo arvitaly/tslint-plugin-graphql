@@ -1,20 +1,18 @@
 // tslint:disable max-classes-per-file ordered-imports object-literal-sort-keys
 import {
     DocumentNode,
-    GraphQLObjectType, GraphQLSchema, GraphQLString, IntrospectionQuery,
-    buildClientSchema, parse, validate,
+    GraphQLSchema,
+    IntrospectionQuery,
+    buildClientSchema,
+    parse,
+    validate
 } from "graphql";
-import {
-    flatten,
-    keys,
-    last,
-    reduce,
-    without,
-} from "lodash";
+import { without, } from "lodash";
 import { RuleFailure, Rules, RuleWalker, IOptions } from "tslint";
 import * as ts from "typescript";
 import fs = require("fs");
 import path = require("path");
+
 const graphQLValidationRuleNames = [
     "UniqueOperationNames",
     "LoneAnonymousOperation",
@@ -58,6 +56,7 @@ const relayGraphQLValidationRules = relayRuleNames.map((ruleName) => {
 });
 export class Rule extends Rules.AbstractRule {
     public static FAILURE_STRING = "import statement forbidden";
+
     public apply(sourceFile: ts.SourceFile): RuleFailure[] {
         return this.applyWithWalker(new GraphQLWalker(sourceFile, this.getOptions()));
     }
@@ -90,7 +89,7 @@ class GraphQLWalker extends RuleWalker {
                             let currentLiteral = template.head.getText();
                             currentLiteral = currentLiteral.substr(0, currentLiteral.length - 2).replace(/\.+$/gi, "");
                             let text = currentLiteral;
-                            template.templateSpans.map((span, i) => {
+                            template.templateSpans.map((span) => {
                                 text += replaceExpression(span.expression.getText(), currentLiteral, rule.env);
                                 currentLiteral = span.literal.getText();
                                 currentLiteral = currentLiteral.substr(2, currentLiteral.length - 4)
@@ -98,7 +97,7 @@ class GraphQLWalker extends RuleWalker {
                                 text += currentLiteral;
                             });
                             query = text + "}`";
-                        default:
+                            break;
                     }
                     if (query !== null) {
                         this.handleTemplate(node, query.substr(1, query.length - 2), rule.schema, rule.env);
@@ -224,7 +223,8 @@ function replaceExpression(fragment: string, chunk: string, env?: Env) {
         // This is Lokka-style fragment interpolation where you actually type the '...' yourself
         return strWithLen(nameLength + 3);
     } else {
-        throw new Error("Invalid interpolation");
+        return fragment;
+        // throw new Error("Invalid interpolation");
     }
 }
 function strWithLen(len: number) {

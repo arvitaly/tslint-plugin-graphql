@@ -2,9 +2,10 @@
   "name": "tslint-plugin-graphql",
   "version": "0.0.5",
   "description": "Check your GraphQL query strings against a schema.",
-  "main": "tslint-base.json",
+  "main": "tslint-plugin-graphql.json",
   "scripts": {
-    "test": "tsc && npm run tslint && jest --verbose --coverage",
+    "build": "rm -rf rules && tsc -p tsconfig.json",
+    "test": "npm run build && tslint --test test/rules/**/*",
     "watch:test": "jest --watch",
     "tslint": "tslint --config test/tslint1.json test/test1.ts && tslint --config test/tslint2.json test/test2.ts"
   },
@@ -33,7 +34,7 @@
     "@types/jest": "^19.2.1",
     "coveralls": "^2.11.15",
     "jest": "^19.0.2",
-    "tslint": "^4.0.2",
+    "tslint": "^5",
     "typescript": "^2.1.4"
   },
   "dependencies": {
